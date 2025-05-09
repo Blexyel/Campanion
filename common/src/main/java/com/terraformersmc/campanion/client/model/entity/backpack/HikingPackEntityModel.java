@@ -1,6 +1,5 @@
 package com.terraformersmc.campanion.client.model.entity.backpack;
 
-import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;

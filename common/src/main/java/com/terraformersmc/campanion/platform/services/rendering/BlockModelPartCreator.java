@@ -1,7 +1,5 @@
 package com.terraformersmc.campanion.platform.services.rendering;
 
-import java.util.List;
-
 public interface BlockModelPartCreator {
 	void beginQuad();
 

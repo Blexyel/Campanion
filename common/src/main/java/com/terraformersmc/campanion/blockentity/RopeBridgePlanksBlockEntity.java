@@ -1,7 +1,6 @@
 package com.terraformersmc.campanion.blockentity;
 
 import com.terraformersmc.campanion.client.renderer.RopeBridgePlankRenderer;
-import com.terraformersmc.campanion.platform.Services;
 import com.terraformersmc.campanion.platform.services.ClientServices;
 import com.terraformersmc.campanion.platform.services.rendering.BlockModelCreatedData;
 import com.terraformersmc.campanion.platform.services.rendering.BlockModelPartCreator;
