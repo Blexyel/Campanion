@@ -59,6 +59,7 @@ public class CampanionClient {
 
 	public static void registerKeybindings(Consumer<KeyMapping> registery) {
 		registery.accept(CampanionKeybinds.OPEN_BACKPACK_KEY);
+		registery.accept(CampanionKeybinds.RENDER_TENT_KEY);
 	}
 
 	public static void registerEntityRenderers(RegisterEntityRendersCallback registry) {

@@ -26,11 +26,13 @@ import net.minecraft.world.level.block.state.BlockState;
 public enum BuiltTentItemRenderer {
 	INSTANCE;
 
-	public boolean render(ItemStack stack, PoseStack matrices, BlockPos basePos, MultiBufferSource provider, int lightOverride) {
+	public boolean render(ItemStack stack, PoseStack matrices, BlockPos basePos, MultiBufferSource provider,
+			int lightOverride) {
 		if (!stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains("Blocks")) {
 			return false;
 		}
-		FakeWorld fakeWorld = ((CampanionRenderWorldStasher)(Object) stack).getCampanionRenderWorld(stack, basePos, lightOverride);
+		FakeWorld fakeWorld = ((CampanionRenderWorldStasher) (Object) stack).getCampanionRenderWorld(stack, basePos,
+				lightOverride);
 		fakeWorld.blockStateMap.forEach((pos, state) -> {
 			matrices.pushPose();
 			matrices.translate(pos.getX(), pos.getY(), pos.getZ());
@@ -40,14 +42,20 @@ public enum BuiltTentItemRenderer {
 		return true;
 	}
 
-	public static void renderFakeBlock(Level world, BlockPos pos, BlockPos basePos, PoseStack matrices, MultiBufferSource provider) {
+
+	public static boolean render = false;
+
+	public static void renderFakeBlock(Level world, BlockPos pos, BlockPos basePos, PoseStack matrices,
+			MultiBufferSource provider) {
 		BlockState state = world.getBlockState(pos);
 		VertexConsumer buffer = provider.getBuffer(ItemBlockRenderTypes.getChunkRenderType(state));
 
 		BlockPos off = basePos.offset(pos);
 		BlockRenderDispatcher manager = Minecraft.getInstance().getBlockRenderer();
-		if (state.getRenderShape() == RenderShape.MODEL) {
-			manager.renderBatched(state, off, world, matrices, buffer, false, RandomSource.create());
+	
+			if (render) {	if (state.getRenderShape() == RenderShape.MODEL) {
+				manager.renderBatched(state, off, world, matrices, buffer, false, RandomSource.create());
+			}
 		}
 
 		BlockEntity entity = world.getBlockEntity(pos);
@@ -56,11 +64,14 @@ public enum BuiltTentItemRenderer {
 		}
 	}
 
-	private static <E extends BlockEntity> void renderBlockEntity(E entity, PoseStack matrices, MultiBufferSource provider, int light) {
-		BlockEntityRenderer<E> blockEntityRenderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(entity);
-		if (blockEntityRenderer != null) {
+	private static <E extends BlockEntity> void renderBlockEntity(E entity, PoseStack matrices,
+			MultiBufferSource provider, int light) {
+		BlockEntityRenderer<E> blockEntityRenderer = Minecraft.getInstance().getBlockEntityRenderDispatcher()
+				.getRenderer(entity);
+		if (blockEntityRenderer != null && render) {
 			try {
-				blockEntityRenderer.render(entity, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true), matrices, provider, light, OverlayTexture.NO_OVERLAY);
+				blockEntityRenderer.render(entity, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true),
+						matrices, provider, light, OverlayTexture.NO_OVERLAY);
 			} catch (Throwable var5) {
 				CrashReport crashReport = CrashReport.forThrowable(var5, "Tent Rendering Block Entity");
 				CrashReportCategory crashReportSection = crashReport.addCategory("Block Entity Details");
